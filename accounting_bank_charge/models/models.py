@@ -424,32 +424,61 @@ class AccountPayment(models.Model):
                     ]})
             
             if self.is_additional_cost and self.journal_type == "sale":
-                move.write({'line_ids': [
-                    (0, 0, {
-                        "name": 'Additional Cost',
-                        "ref": self.ref,
-                        'currency_id': self.currency_id.id,
-                        "partner_id": self.partner_id.id or False,
-                        "journal_id": self.journal_id.id,
-                        "account_id": self.journal_id.default_account_id.id,
-                        "debit": 0.0,
-                        "credit": self.additional_cost,
-                        "date_maturity": self.date,
-                        "bank_charge_line": True
-                    }),
-                    (0, 0, {
-                        "name": 'Additional Cost',
-                        "ref": self.ref,
-                        'currency_id': self.currency_id.id,
-                        "partner_id": self.partner_id.id or False,
-                        "journal_id": self.journal_id.id,
-                        "account_id": self.journal_id.default_account_id.id,
-                        "debit": self.additional_cost,
-                        "credit": 0.0,
-                        "date_maturity": self.date,
-                        "bank_charge_line": True
-                    }),
-                ]})
+                if self.journal_type == "sale":
+                    move.write({'line_ids': [
+                        (0, 0, {
+                            "name": 'Additional Cost',
+                            "ref": self.ref,
+                            'currency_id': self.currency_id.id,
+                            "partner_id": self.partner_id.id or False,
+                            "journal_id": self.journal_id.id,
+                            "account_id": self.journal_id.default_account_id.id,
+                            "debit": 0.0,
+                            "credit": self.additional_cost,
+                            "date_maturity": self.date,
+                            "bank_charge_line": True
+                        }),
+                        (0, 0, {
+                            "name": 'Additional Cost',
+                            "ref": self.ref,
+                            'currency_id': self.currency_id.id,
+                            "partner_id": self.partner_id.id or False,
+                            "journal_id": self.journal_id.id,
+                            "account_id": self.additional_cost_account.id,
+                            "debit": self.additional_cost,
+                            "credit": 0.0,
+                            "date_maturity": self.date,
+                            "bank_charge_line": True
+                        }),
+                    ]})
+                else:
+                    move.write({'line_ids': [
+                        (0, 0, {
+                            "name": 'Bank Charges',
+                            "ref": self.ref,
+                            'currency_id': self.currency_id.id,
+                            "partner_id": self.partner_id.id or False,
+                            "journal_id": self.journal_id.id,
+                            "account_id": self.journal_id.default_account_id.id,
+                            "debit": 0.0,
+                            "credit": self.additional_cost,
+                            "date_maturity": self.date,
+                            "bank_charge_line": True
+                        }),
+                        (0, 0, {
+                            "name": 'Bank Charges',
+                            "ref": self.ref,
+                            'currency_id': self.currency_id.id,
+                            "partner_id": self.partner_id.id or False,
+                            "journal_id": self.journal_id.id,
+                            "account_id": self.additional_cost_account.id,
+                            "debit": self.additional_cost,
+                            "credit": 0.0,
+                            "date_maturity": self.date,
+                            "bank_charge_line": True
+                        }),
+                    ]})
+
                 
 
 
