@@ -6,6 +6,7 @@ class AccountMoveLine(models.Model):
     _inherit = 'account.move.line'
 
     bank_charge_line = fields.Boolean('Its a Bank Charge')
+    additional_cost_line = fields.Boolean('Its an Additional Cost')
     bank_tax_charge_line = fields.Boolean('Its a Bank Tax Charge')
 
 class PaymentRegister(models.TransientModel):
@@ -423,7 +424,7 @@ class AccountPayment(models.Model):
                         tax_line,
                     ]})
             
-            if self.is_additional_cost and self.journal_type == "sale":
+            if self.is_additional_cost and not move.line_ids.filtered(lambda e: e.additional_cost_line is True):
                 if self.journal_type == "sale":
                     move.write({'line_ids': [
                         (0, 0, {
@@ -436,7 +437,7 @@ class AccountPayment(models.Model):
                             "debit": 0.0,
                             "credit": self.additional_cost,
                             "date_maturity": self.date,
-                            "bank_charge_line": True
+                            "additional_cost_line": True
                         }),
                         (0, 0, {
                             "name": 'Additional Cost',
@@ -448,13 +449,13 @@ class AccountPayment(models.Model):
                             "debit": self.additional_cost,
                             "credit": 0.0,
                             "date_maturity": self.date,
-                            "bank_charge_line": True
+                            "additional_cost_line": True
                         }),
                     ]})
                 else:
                     move.write({'line_ids': [
                         (0, 0, {
-                            "name": 'Bank Charges',
+                            "name": 'Additional Cost',
                             "ref": self.ref,
                             'currency_id': self.currency_id.id,
                             "partner_id": self.partner_id.id or False,
@@ -463,10 +464,10 @@ class AccountPayment(models.Model):
                             "debit": 0.0,
                             "credit": self.additional_cost,
                             "date_maturity": self.date,
-                            "bank_charge_line": True
+                            "additional_cost_line": True
                         }),
                         (0, 0, {
-                            "name": 'Bank Charges',
+                            "name": 'Additional Cost',
                             "ref": self.ref,
                             'currency_id': self.currency_id.id,
                             "partner_id": self.partner_id.id or False,
@@ -475,7 +476,7 @@ class AccountPayment(models.Model):
                             "debit": self.additional_cost,
                             "credit": 0.0,
                             "date_maturity": self.date,
-                            "bank_charge_line": True
+                            "additional_cost_line": True
                         }),
                     ]})
 
