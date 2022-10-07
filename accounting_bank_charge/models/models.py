@@ -268,17 +268,17 @@ class AccountPayment(models.Model):
             if 'line_ids' in changed_fields:
                 all_lines = move.line_ids
                 liquidity_lines, counterpart_lines, writeoff_lines = pay._seek_for_lines()
-                if len(liquidity_lines) != 1 and not pay.is_bank_charges:
+                if len(liquidity_lines) != 2 and not pay.is_bank_charges:
                     raise UserError(_(
                         "Journal Entry %s is not valid. In order to proceed, the journal items must "
                         "include one and only one outstanding payments/receipts account.",
                         move.display_name,
                     ))
-                if len(liquidity_lines) != 1 and pay.is_bank_charges:
+                if len(liquidity_lines) != 2 and pay.is_bank_charges:
                     liquidity_lines = liquidity_lines.filtered(
                         lambda e: e.bank_charge_line is False and e.bank_tax_charge_line is False)
 
-                if len(counterpart_lines) != 1:
+                if len(counterpart_lines) != 2:
                     raise UserError(_(
                         "Journal Entry %s is not valid. In order to proceed, the journal items must "
                         "include one and only one receivable/payable account (with an exception of "
@@ -289,7 +289,7 @@ class AccountPayment(models.Model):
                 writeoff_lines = writeoff_lines.filtered(
                     lambda e: e.bank_charge_line is False and e.bank_tax_charge_line is False)
                 if writeoff_lines and not writeoff_lines.bank_charge_line and not writeoff_lines.bank_tax_charge_line and len(
-                        writeoff_lines.account_id) != 1:
+                        writeoff_lines.account_id) != 2:
                     raise UserError(_(
                         "Journal Entry %s is not valid. In order to proceed, "
                         "all optional journal items must share the same account.",
