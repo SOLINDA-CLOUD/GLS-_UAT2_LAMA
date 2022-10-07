@@ -274,17 +274,17 @@ class AccountPayment(models.Model):
                 #         "include one and only one outstanding payments/receipts account.",
                 #         move.display_name,
                 #     ))
-                if len(liquidity_lines) != 2:
-                    liquidity_lines = liquidity_lines.filtered(
-                        lambda e: e.bank_charge_line is False and e.bank_tax_charge_line is False)
+                # if len(liquidity_lines) != 2:
+                #     liquidity_lines = liquidity_lines.filtered(
+                #         lambda e: e.bank_charge_line is False and e.bank_tax_charge_line is False)
 
-                if len(counterpart_lines) != 2:
-                    raise UserError(_(
-                        "Journal Entry %s is not valid. In order to proceed, the journal items must "
-                        "include one and only one receivable/payable account (with an exception of "
-                        "internal transfers).",
-                        move.display_name,
-                    ))
+                # if len(counterpart_lines) != 2:
+                #     raise UserError(_(
+                #         "Journal Entry %s is not valid. In order to proceed, the journal items must "
+                #         "include one and only one receivable/payable account (with an exception of "
+                #         "internal transfers).",
+                #         move.display_name,
+                #     ))
 
                 writeoff_lines = writeoff_lines.filtered(
                     lambda e: e.bank_charge_line is False and e.bank_tax_charge_line is False)
