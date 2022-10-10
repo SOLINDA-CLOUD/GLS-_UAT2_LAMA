@@ -6,6 +6,7 @@ class AccountMoveLine(models.Model):
     _inherit = 'account.move.line'
 
     bank_charge_line = fields.Boolean('Its a Bank Charge')
+    additional_cost_line = fields.Boolean('Its an Additional Cost')
     bank_tax_charge_line = fields.Boolean('Its a Bank Tax Charge')
 
 class PaymentRegister(models.TransientModel):
@@ -17,9 +18,12 @@ class PaymentRegister(models.TransientModel):
         return int(account)
 
     is_bank_charges = fields.Boolean('Add Bank Changes')
+    is_additional_cost = fields.Boolean('Add Additional Cost')
     bank_charges_account = fields.Many2one('account.account', string='Bank Charges Account',
                                            default=_bank_charge_account)
+    additional_cost_account = fields.Many2one('account.account', string='Additional Expense Account')
     bank_charges = fields.Float(string='Bank Charges')
+    additional_cost = fields.Float(string='Additional Cost')
     journal_type = fields.Selection(related='journal_id.type', store=True)
 
     is_bank_tax_applicable = fields.Boolean('Add VAT')
@@ -72,8 +76,11 @@ class PaymentRegister(models.TransientModel):
             'payment_method_line_id': self.payment_method_line_id.id,
             'destination_account_id': self.line_ids[0].account_id.id,
             'is_bank_charges': self.is_bank_charges,
+            'is_additional_cost': self.is_additional_cost,
             'bank_charges_account': self.bank_charges_account.id or False,
+            'additional_cost_account': self.additional_cost_account.id or False,
             'bank_charges': self.bank_charges or False,
+            'additional_cost': self.additional_cost or False,
             'is_bank_tax_applicable': self.is_bank_tax_applicable,
             'bank_tax_id': self.bank_tax_id.id or False,
             'bank_tax_amount': self.bank_tax_amount,
@@ -105,6 +112,10 @@ class AccountPayment(models.Model):
     is_bank_tax_applicable = fields.Boolean('Add VAT')
     bank_tax_id = fields.Many2one('account.tax', 'Tax ID')
     bank_tax_amount = fields.Float(string='Tax Charges')
+
+    is_additional_cost = fields.Boolean('Add Additional Cost')
+    additional_cost_account = fields.Many2one('account.account', string='Additional Expense Account')
+    additional_cost = fields.Float(string='Additional Cost')
 
     def get_tax_vals(self):
         tax_repartition_lines = self.bank_tax_id.invoice_repartition_line_ids.filtered(
@@ -257,28 +268,28 @@ class AccountPayment(models.Model):
             if 'line_ids' in changed_fields:
                 all_lines = move.line_ids
                 liquidity_lines, counterpart_lines, writeoff_lines = pay._seek_for_lines()
-                if len(liquidity_lines) != 1 and not pay.is_bank_charges:
-                    raise UserError(_(
-                        "Journal Entry %s is not valid. In order to proceed, the journal items must "
-                        "include one and only one outstanding payments/receipts account.",
-                        move.display_name,
-                    ))
-                if len(liquidity_lines) != 1 and pay.is_bank_charges:
-                    liquidity_lines = liquidity_lines.filtered(
-                        lambda e: e.bank_charge_line is False and e.bank_tax_charge_line is False)
+                # if len(liquidity_lines) != 2:
+                #     raise UserError(_(
+                #         "Journal Entry %s is not valid. In order to proceed, the journal items must "
+                #         "include one and only one outstanding payments/receipts account.",
+                #         move.display_name,
+                #     ))
+                # if len(liquidity_lines) != 2:
+                #     liquidity_lines = liquidity_lines.filtered(
+                #         lambda e: e.bank_charge_line is False and e.bank_tax_charge_line is False)
 
-                if len(counterpart_lines) != 1:
-                    raise UserError(_(
-                        "Journal Entry %s is not valid. In order to proceed, the journal items must "
-                        "include one and only one receivable/payable account (with an exception of "
-                        "internal transfers).",
-                        move.display_name,
-                    ))
+                # if len(counterpart_lines) != 2:
+                #     raise UserError(_(
+                #         "Journal Entry %s is not valid. In order to proceed, the journal items must "
+                #         "include one and only one receivable/payable account (with an exception of "
+                #         "internal transfers).",
+                #         move.display_name,
+                #     ))
 
                 writeoff_lines = writeoff_lines.filtered(
                     lambda e: e.bank_charge_line is False and e.bank_tax_charge_line is False)
                 if writeoff_lines and not writeoff_lines.bank_charge_line and not writeoff_lines.bank_tax_charge_line and len(
-                        writeoff_lines.account_id) != 1:
+                        writeoff_lines.account_id) != 2:
                     raise UserError(_(
                         "Journal Entry %s is not valid. In order to proceed, "
                         "all optional journal items must share the same account.",
@@ -412,7 +423,64 @@ class AccountPayment(models.Model):
                         }),
                         tax_line,
                     ]})
+            
+            if self.is_additional_cost and not move.line_ids.filtered(lambda e: e.additional_cost_line is True):
+                if self.journal_type == "sale":
+                    move.write({'line_ids': [
+                        (0, 0, {
+                            "name": 'Additional Cost',
+                            "ref": self.ref,
+                            'currency_id': self.currency_id.id,
+                            "partner_id": self.partner_id.id or False,
+                            "journal_id": self.journal_id.id,
+                            "account_id": self.journal_id.default_account_id.id,
+                            "debit": 0.0,
+                            "credit": self.additional_cost,
+                            "date_maturity": self.date,
+                            "additional_cost_line": True
+                        }),
+                        (0, 0, {
+                            "name": 'Additional Cost',
+                            "ref": self.ref,
+                            'currency_id': self.currency_id.id,
+                            "partner_id": self.partner_id.id or False,
+                            "journal_id": self.journal_id.id,
+                            "account_id": self.additional_cost_account.id,
+                            "debit": self.additional_cost,
+                            "credit": 0.0,
+                            "date_maturity": self.date,
+                            "additional_cost_line": True
+                        }),
+                    ]})
+                else:
+                    move.write({'line_ids': [
+                        (0, 0, {
+                            "name": 'Additional Cost',
+                            "ref": self.ref,
+                            'currency_id': self.currency_id.id,
+                            "partner_id": self.partner_id.id or False,
+                            "journal_id": self.journal_id.id,
+                            "account_id": self.journal_id.default_account_id.id,
+                            "debit": 0.0,
+                            "credit": self.additional_cost,
+                            "date_maturity": self.date,
+                            "additional_cost_line": True
+                        }),
+                        (0, 0, {
+                            "name": 'Additional Cost',
+                            "ref": self.ref,
+                            'currency_id': self.currency_id.id,
+                            "partner_id": self.partner_id.id or False,
+                            "journal_id": self.journal_id.id,
+                            "account_id": self.additional_cost_account.id,
+                            "debit": self.additional_cost,
+                            "credit": 0.0,
+                            "date_maturity": self.date,
+                            "additional_cost_line": True
+                        }),
+                    ]})
 
+                
 
 
     def _synchronize_to_moves(self, changed_fields):
