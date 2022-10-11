@@ -11,6 +11,9 @@
         <xpath expr="//button[@name='button_draft']" position="attributes">
           <attribute name="invisible">0</attribute>
         </xpath>
+        <xpath expr="//button[@name='button_draft']" position="replace">
+          <attribute name="attrs">{'invisible' : [('payment_state','=','partial')]}</attribute>
+        </xpath>
       </field>
     </record>
 
