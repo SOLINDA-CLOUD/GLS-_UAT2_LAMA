@@ -12,7 +12,7 @@
           <attribute name="invisible">0</attribute>
         </xpath>
         <xpath expr="//button[@name='button_draft']" position="replace">
-          <attribute name="attrs">{'invisible' : [('payment_state','=','partial')]}</attribute>
+          <attribute name="attrs">{'invisible' : ['|',('show_reset_to_draft_button', '=', True),('payment_state','=','partial')]}</attribute>
         </xpath>
       </field>
     </record>
