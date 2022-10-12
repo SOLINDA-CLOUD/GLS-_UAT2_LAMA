@@ -1,7 +1,7 @@
 from odoo import models, fields, api
 
-class HrExpense(models.Model):
-    _inherit = 'hr.expense'
+# class HrExpense(models.Model):
+#     _inherit = 'hr.expense'
 
 
 class HrExpenseSheet(models.Model):
