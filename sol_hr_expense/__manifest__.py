@@ -26,6 +26,7 @@
     'data': [
         # 'security/ir.model.access.csv',
         'views/hr_expense_sheet_views.xml',
+        'views/hr_expense_views.xml',
         'views/templates.xml',
     ],
     # only loaded in demonstration mode
