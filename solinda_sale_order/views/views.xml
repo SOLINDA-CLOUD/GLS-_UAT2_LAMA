@@ -46,6 +46,9 @@
         <xpath expr="//field[@name='analytic_account_id']" position="attributes">
           <attribute name="required">1</attribute>
         </xpath>
+        <xpath expr="//field[@name='tag_ids']" position="attributes">
+          <attribute name="required">1</attribute>
+        </xpath>
       </field>
     </record>
   </data>
