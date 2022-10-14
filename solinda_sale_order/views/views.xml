@@ -49,6 +49,9 @@
         <xpath expr="//field[@name='tag_ids']" position="attributes">
           <attribute name="required">1</attribute>
         </xpath>
+        <xpath expr="//button[@id='action_confirm']" position="attributes">
+          <attribute name="groups">"sale.group_sales_manager"</attribute>
+        </xpath>
       </field>
     </record>
   </data>
