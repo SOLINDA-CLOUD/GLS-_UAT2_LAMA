@@ -50,7 +50,7 @@ class ProductTemplate(models.Model):
             d = ''
             for l in i.seller_ids:
                 if l.product_code:
-                    d += l.product_code + '| '
+                    d += l.product_code + ' | '
                 else:
                     d = d
             i.code_product_vendor = d
