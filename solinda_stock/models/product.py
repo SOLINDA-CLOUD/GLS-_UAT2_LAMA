@@ -28,6 +28,8 @@ class ProductProduct(models.Model):
             'target':'new'
         }
 
+    code_product_vendor=fields.Char(related='product_tmpl_id.code_product_vendor')
+
 
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
