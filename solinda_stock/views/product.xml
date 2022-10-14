@@ -48,6 +48,7 @@
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='name']" position="after">
                     <field name="name" string="Vendor Product Code" filter_domain="[('code_product_vendor', 'ilike', self)]"/>
+                    <field name="code_product_vendor" />
                 </xpath>
             </field>
         </record>
