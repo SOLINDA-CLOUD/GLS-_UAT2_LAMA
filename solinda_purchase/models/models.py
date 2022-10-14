@@ -95,8 +95,8 @@ class PurchaseOrder(models.Model):
 
     name = fields.Char(string='Order Reference')
     notes = fields.Html(string='Notes')
-    ekspedisi = fields.Char('Ekspedisi')
-    # location_id = fields.Many2one('stock.location', string='Location',related="picking_type_id.default_location_dest_id")
+    courier = fields.Char('Courier')
+    # locatioC_id = fields.Many2one('stock.location', string='Location',related="picking_type_id.default_location_dest_id")
     location_id = fields.Many2one('stock.location', string='Location')
     state = fields.Selection([
         ('draft', 'RFQ'),
