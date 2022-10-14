@@ -8,6 +8,9 @@
             <field name="model">product.product</field>
             <field name="inherit_id" ref="product.product_product_tree_view"/>
             <field name="arch" type="xml">
+                <search string="Search Product">
+                    <field name="code_product_vendor" />
+                </search>
                 <xpath expr="//field[@name='default_code']" position="after">
                     <field name="code_product_vendor" />
                 </xpath>
