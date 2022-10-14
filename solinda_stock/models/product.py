@@ -33,7 +33,7 @@ class ProductTemplate(models.Model):
     _inherit = 'product.template'
     _sql_constraints = [('internal_reference_must_uniq', 'unique(default_code)', 'Internal Reference Must Be Unique!')]
 
-    code_product_vendor = fields.Char(compute='_compute_code_product_vendor', string='Code Product Vendor')
+    code_product_vendor = fields.Char(compute='_compute_code_product_vendor', string='PN')
     
     # @api.constrains('default_code')
     # def _constrains_default_code(self):
