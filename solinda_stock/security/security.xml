@@ -3,7 +3,7 @@
     <data>
 
         <record id="sales_marketing_groupsol" model="res.groups">
-            <field name="name">Sales/Marketing</field>
+            <field name="name">Validate DO</field>
         </record>
 
         <record id="validate_internal_groupsol" model="res.groups">
