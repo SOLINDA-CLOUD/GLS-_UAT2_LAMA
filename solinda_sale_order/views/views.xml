@@ -52,7 +52,7 @@
         <xpath expr="//button[@id='action_confirm']" position="attributes">
           <attribute name="groups">"sale.group_sales_manager"</attribute>
         </xpath>
-        <xpath expr="//button[@name='action_confirm']" position="attributes">
+        <xpath expr="//button[@name='action_confirm'][2]" position="attributes">
           <attribute name="groups">"sale.group_sales_manager"</attribute>
         </xpath>
       </field>
