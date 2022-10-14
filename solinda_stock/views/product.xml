@@ -41,17 +41,6 @@
             </field>
         </record>
 
-        <record id="inherit_view_search_pn_product" model="ir.ui.view">
-            <field name="name">inherit.view.search.pn.product</field>
-            <field name="model">product.product</field>
-            <field name="inherit_id" ref="product.product_template_search_view"/>
-            <field name="arch" type="xml">
-                <xpath expr="//search" position="inside">
-                    <field name="code_product_vendor" filter_domain="[('code_product_vendor', 'ilike', self)]"/>
-                </xpath>
-            </field>
-        </record>
-
         <record id="inherit_serachprodtemp" model="ir.ui.view">
             <field name="name">product.template.view.search.inherit</field>
             <field name="model">product.template</field>
