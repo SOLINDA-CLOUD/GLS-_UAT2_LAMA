@@ -358,6 +358,10 @@ class GaProject(models.Model):
     rap_id = fields.Many2one('cost.sheet', string='Cost Sheet',ondelete="cascade")
     product_id = fields.Many2one('product.product',required=True)    
     product_qty = fields.Integer('Quantity')
+    product_uom = fields.Many2one('uom.uom', string='Unit of Measure',
+                                  domain="[('category_id', '=', product_uom_category_id)]")
+    product_uom_category_id = fields.Many2one(
+        related='product_id.uom_id.category_id')
     existing_price = fields.Float('Existing Price')
     rfq_price = fields.Float('RFQ Price', store=True)
     total_price = fields.Float(compute='_compute_total_price', string='Total Price',store=True)
@@ -396,6 +400,10 @@ class WarantyWaranty(models.Model):
     
     product_id = fields.Many2one('product.product',required=True)    
     product_qty = fields.Integer('Quantity')
+    product_uom = fields.Many2one('uom.uom', string='Unit of Measure',
+                                  domain="[('category_id', '=', product_uom_category_id)]")
+    product_uom_category_id = fields.Many2one(
+        related='product_id.uom_id.category_id')
     existing_price = fields.Float('Existing Price')
     rfq_price = fields.Float('RFQ Price', store=True)
     total_price = fields.Float(compute='_compute_total_price', string='Total Price',store=True)

@@ -87,6 +87,7 @@
                                     <tree editable="bottom">
                                         <field name="product_id" required="1" />
                                         <field name="product_qty" />
+                                        <field name="product_uom" />
                                         <field name="existing_price" force_save="1" readonly="1"/>
                                         <field name="rfq_price" force_save="1"/>
                                         <field name="total_price" />
@@ -101,6 +102,7 @@
                                     <tree editable="bottom">
                                         <field name="product_id" required="1" />
                                         <field name="product_qty" />
+                                        <field name="product_uom" />
                                         <field name="existing_price" force_save="1" readonly="1"/>
                                         <field name="rfq_price" force_save="1"/>
                                         <field name="total_price" />
