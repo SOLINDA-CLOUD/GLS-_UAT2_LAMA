@@ -40,7 +40,7 @@ class CostSheetXlsx(models.AbstractModel):
 
         def create_header(row, col, project):
             worksheet.write(row - 1, col, project, style_basic_bold_center)
-            worksheet.merge_range(row, col, row + 1, col, "Budget Code", header_format)
+            worksheet.merge_range(row, col, row + 1, col, "Project Code", header_format)
             worksheet.merge_range(row, col + 1, row + 1, col + 1, "No", header_format)
             worksheet.merge_range(row, col + 2, row + 1, col + 4, "Item", header_format)
             worksheet.merge_range(row, col + 5, row + 1, col + 5, "Quantity", header_format)
@@ -56,7 +56,7 @@ class CostSheetXlsx(models.AbstractModel):
             worksheet.merge_range(row, col + 7, row + 1, col + 7, "Disc", header_format)
             worksheet.merge_range(row, col + 8, row + 1, col + 8, "Total Price", header_format)
             worksheet.merge_range(row, col + 9, row + 1, col + 9, "Vendor Name", header_format)
-            worksheet.merge_range(row, col + 10, row + 1, col + 10, "Dept Code", header_format)
+            worksheet.merge_range(row, col + 10, row + 1, col + 10, "Budget Code", header_format)
 
         def get_style_name(type):
             if type == 'line_section':

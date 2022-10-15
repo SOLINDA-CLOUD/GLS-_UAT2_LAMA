@@ -361,7 +361,7 @@ class GaProject(models.Model):
     existing_price = fields.Float('Existing Price')
     rfq_price = fields.Float('RFQ Price', store=True)
     total_price = fields.Float(compute='_compute_total_price', string='Total Price',store=True)
-    rap_price = fields.Float('RAP Price')
+    rap_price = fields.Float('RAP Total Price')
     
     remarks = fields.Text('Remarks')
     
