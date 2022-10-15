@@ -100,7 +100,7 @@ class Item(models.Model):
 
     def _compute_qty_received(self):
         for this in self:
-            this.qty_po = sum(
+            this.qty_received = sum(
                 this.purchase_order_line_ids.mapped('qty_received'))
     
     @api.onchange('product_id')
