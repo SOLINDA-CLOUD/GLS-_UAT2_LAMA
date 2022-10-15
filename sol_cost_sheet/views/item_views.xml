@@ -60,6 +60,7 @@
           <button name="view_item_in_pr_line" type="object" icon="fa-pencil-square-o" />
           <field name="qty_po" />
           <button name="view_item_in_po_line" type="object" icon="fa-pencil-square-o" />
+          <field name="qty_received" />
           <field name="total_price" string="RAP Price" />
           <field name="price_po" />
           <button name="view_item_in_purchase" type="object" icon="fa-pencil-square-o" />

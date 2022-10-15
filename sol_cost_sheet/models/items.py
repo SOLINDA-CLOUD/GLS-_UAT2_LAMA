@@ -39,6 +39,7 @@ class Item(models.Model):
     purchase_order_line_ids = fields.One2many('purchase.order.line', 'item_id', string='Purchase Order Line')
     qty_pr = fields.Integer(compute='_compute_qty_pr', string='Qty on PR')
     qty_po = fields.Integer(compute='_compute_qty_po', string='Qty on PO')
+    qty_received = fields.Integer(compute='_compute_qty_received', string='Qty Received')
     # price_po = fields.Float(compute='_compute_qty_po', string='PO Price')
     price_po = fields.Float(compute='_compute_price_po', string='PO Price')
     project_code = fields.Char('Project Code', related="rap_id.project_id.code")
@@ -96,6 +97,11 @@ class Item(models.Model):
         for this in self:
             this.qty_po = sum(this.purchase_order_line_ids.mapped('product_qty'))
             # this.price_po = sum(this.purchase_order_line_ids.mapped('price_subtotal'))
+
+    def _compute_qty_received(self):
+        for this in self:
+            this.qty_po = sum(
+                this.purchase_order_line_ids.mapped('qty_received'))
     
     @api.onchange('product_id')
     def _onchange_product_rfqprice(self):
