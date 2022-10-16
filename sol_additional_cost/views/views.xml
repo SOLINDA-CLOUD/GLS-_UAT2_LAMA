@@ -1,7 +1,7 @@
 <odoo>
   <data>
-    <record id="view_account_payment_form" model="ir.ui.view">
-      <field name="name">account.payment.register.form.inherited</field>
+    <record id="account_payment_register_form_inherit_view_additional_cost" model="ir.ui.view">
+      <field name="name">account.payment.register.form.inherit.view.additional.cost</field>
       <field name="model">account.payment.register</field>
       <field name="inherit_id" ref="account.view_account_payment_form"/>
       <field name="arch" type="xml">
