@@ -38,3 +38,11 @@ class PaymentRegister(models.TransientModel):
                 'account_id': self.writeoff_account_id.id,
             }
         return payment_vals
+
+class AccountPayment(models.Model):
+    _inherit = 'account.payment'
+
+    is_additional_cost = fields.Boolean('Add Aditional Cost')
+    additional_cost_account = fields.Many2one(
+        'account.account', string='Additional Cost Account')
+    additional_cost = fields.Float(string='Additional Cost')
