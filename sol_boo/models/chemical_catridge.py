@@ -39,13 +39,13 @@ class ChemicalCatridge(models.Model):
                 if sisa_stock:
                     i.stock_awal = sisa_stock.sisa_stock
             
-    @api.depends('sisa_tangki_kg','date','warehouse_id','product_id')
+    @api.depends('sisa_tangki_kg','date','warehouse_id','product_id','penuangan')
     def _get_pemakaian(self):
         for i in self:
             if i.sisa_tangki_kg and i.date and i.warehouse_id and i.product_id:
                 getyes = self.env["chemical.catridge"].search([("product_id", "=", i.product_id.id),("warehouse_id", "=", i.warehouse_id.id),('date','<',i.date ),('sisa_tangki_kg','>',0.0 )],limit = 1, order = 'date desc')
                 if getyes:
-                    i.pemakaian = getyes.sisa_tangki_kg - i.sisa_tangki_kg
+                    i.pemakaian = getyes.sisa_tangki_kg - i.sisa_tangki_kg + i.penuangan
                 else:
                     i.pemakaian = 0
             else:
