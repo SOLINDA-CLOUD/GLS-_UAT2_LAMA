@@ -27,9 +27,7 @@ class CostSheetXlsx(models.AbstractModel):
 
         header_format.set_bg_color('#B2B1AE')
 
-        data = self.env['rap.category'].search(domain, order='project_id asc')
-
-        worksheet = workbook.add_worksheet(data.name)
+        worksheet = workbook.add_worksheet('RAP Report')
         worksheet.set_column('A:A', 15)
         worksheet.set_column('B:B', 7)
         worksheet.set_column('C:D', 5)
@@ -75,6 +73,7 @@ class CostSheetXlsx(models.AbstractModel):
         domain = [('rap_id','!=',False)]
         if obj.project_ids:
             domain += [('rap_id.project_id','in',obj.project_ids.ids)]
+        data = self.env['rap.category'].search(domain, order='project_id asc')
         projects = []
         count = 1
 
