@@ -15,4 +15,4 @@ class RapReportWizard(models.TransientModel):
         return self.env.ref(template_report).report_action(self)
 
     project_ids = fields.Many2many('project.project', string='Project')
-    name = fields.Char(string='Name', compute= _compute_project_name, store=True)
+    name = fields.Char(string='Name', compute= _compute_project_name)
