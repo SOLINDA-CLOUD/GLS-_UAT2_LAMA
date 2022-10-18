@@ -7,12 +7,8 @@ class RapReportWizard(models.TransientModel):
 
     api.depends('project_ids')
     def _compute_project_name(self):
-        name = ''
-
-        if self.project_ids:
-            for project in self.project_ids:
-                name = project[0].name
-            return name
+        name = self.project_ids[0].name
+        return name
 
     def download_xlsx_report(self):
         template_report = 'sol_cost_sheet.action_rap_report'
