@@ -18,7 +18,7 @@
       <field name="inherit_id" ref="project.view_task_kanban"/>
       <field name="arch" type="xml">
         <xpath expr="//div[hasclass('oe_kanban_content')]" position="inside">
-          <div attrs="{'invisible': [('is_closed', '=', False)]}">
+          <div attrs="{'invisible': [('is_closed', '=', True)]}">
               Duration : 
             <field name="change_stage_time" widget="remaining_days" force_save="1"/>
           </div>
