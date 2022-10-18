@@ -9,7 +9,7 @@ class RapReportWizard(models.TransientModel):
     def _compute_project_name(self):
         name = ''
         for project in self.project_ids:
-            name = name + project.id
+            name = name + str(project.id)
         return name
 
     def download_xlsx_report(self):
