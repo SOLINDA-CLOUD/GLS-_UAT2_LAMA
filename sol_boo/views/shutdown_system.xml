@@ -12,7 +12,7 @@
                     <field name="type"/>
                     <field name="is_trouble" optional="hide"/>
                     <field name="time"/>
-                    <field name="frek_cleaning" optional="hide"/>
+                    <field name="frek_cleaning" optional="hide" invisible="1"/>
                     <field name="grease_usage" optional="hide"/>
                     <field name="state" />
                 </tree>
@@ -61,8 +61,8 @@
                         </group>
 
                         <group name="cleaning_consumption" col="4" string="Cleaning Report" attrs="{'invisible': [('type', '!=', 'cleaning')]}" groups="base.group_system,sol_boo.group_spv_operator_user">
-                            <field name="frek_cleaning" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                            <field name="cleaning_consumption_ids" nolabel="1" widget="one2many_list" colspan="4">
+                            <field name="frek_cleaning" attrs="{'readonly': [('state', '!=', 'draft')]}" invisible="1"/>
+                            <field name="cleaning_consumption_ids" nolabel="1" invisible="1" widget="one2many_list" colspan="4">
                                 <tree editable="bottom">
                                     <field name="product_id" required="1"/>
                                     <field name="consumption" required="1"/>
