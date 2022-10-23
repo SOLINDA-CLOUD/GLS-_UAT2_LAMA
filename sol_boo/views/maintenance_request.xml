@@ -50,7 +50,7 @@
                 <xpath expr="//sheet" position="inside">
                     <notebook>
                         <page name="action_plan" string="Action Plan">
-                            <field name="action_plan_line" nolabel="1" widget="one2many_list">
+                            <field name="action_plan_line" nolabel="1">
                                 <tree editable="bottom">
                                     <field name="name" required="1"/>
                                     <field name="due_date"/>
@@ -60,7 +60,7 @@
                             </field>
                         </page>
                         <page name="progress_history" string="Progress History">
-                            <field name="progres_history_line" nolabel="1" widget="one2many_list">
+                            <field name="progres_history_line" nolabel="1">
                                 <tree editable="bottom">
                                     <field name="start_date" />
                                     <field name="stage_from"/>
@@ -71,6 +71,17 @@
                             </field>
                             <field name="duration_change_stage" invisible="1"/>
                             <field name="change_stage_time" invisible="1"/>
+                        </page>
+                        <page name="equip_history" string="Equipments History">
+                            <field name="equipment_history_line" nolabel="1">
+                                <tree editable="bottom">
+                                    <field name="equipment_id"/>
+                                    <field name="from_time"/>
+                                    <field name="to_time"/>
+                                    <field name="notes"/>
+                                    <field name="maintenance_id" invisible="1"/>
+                                </tree>
+                            </field>
                         </page>
                     </notebook>
                 </xpath>

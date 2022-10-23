@@ -47,7 +47,7 @@ class ShutdownSystem(models.Model):
     state_maintenance = fields.Char('State Maintenance',related="maintenance_id.stage_id.name")
     frek_cleaning = fields.Float('Frekuensi Cleaning')
     cleaning_consumption_ids = fields.One2many('cleaning.consumption', 'shutdown_id', string='Cleaning Consumption')
-    grease_usage = fields.Float('Grease Usage',tracking=True)
+    grease_usage = fields.Float('Grease Usage(gr)',tracking=True)
     mr_ids = fields.One2many('stock.picking', 'shutdown_id', string='MR')
     mr_count = fields.Integer(compute='_compute_mr_count', string='Mr')
     
