@@ -29,7 +29,7 @@ class PaymentRegister(models.TransientModel):
     bank_tax_amount = fields.Float(string='Tax Charges')
 
     # Additional Cost
-    is_additional_cost = fields.Boolean('Add Aditional Cost')
+    is_additional_cost = fields.Boolean('Add Additional Cost')
     additional_cost_account = fields.Many2one(
         'account.account', string='Additional Cost Account')
     additional_cost = fields.Float(string='Additional Cost')
