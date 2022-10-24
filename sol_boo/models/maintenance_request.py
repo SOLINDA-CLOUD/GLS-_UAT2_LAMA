@@ -1,6 +1,16 @@
 from odoo import _, api, fields, models
 from dateutil import relativedelta
 
+class HistoryEquipmentUsage(models.Model):
+    _name = 'history.equipment.usage'
+    _description = 'History Equipment Usage'
+    
+    equipment_id = fields.Many2one('maintenance.equipment', string='Equipment')
+    from_time = fields.Datetime('From')
+    to_time = fields.Datetime('To')
+    notes = fields.Text('Notes')
+    maintenance_id = fields.Many2one('maintenance.request', string='Maintenance')
+
 class MaintenanceEquipment(models.Model):
     _inherit = 'maintenance.equipment'
 
@@ -57,6 +67,7 @@ class MaintenanceRequest(models.Model):
     _inherit = 'maintenance.request'
     _description = 'Maintenance Request'
     
+    equipment_history_line = fields.One2many('history.equipment.usage', 'maintenance_id', string='Equipment History')
     progres_history_line = fields.One2many('progres.history.maintenance', 'maintenance_id', string='Progress History')
     action_plan_line = fields.One2many('action.plan.maintenance', 'maintenance_id', string='Action Plan')
     shutdown_id = fields.Many2one('shutdown.system', string='Shutdown')
@@ -68,6 +79,7 @@ class MaintenanceRequest(models.Model):
     change_stage_time = fields.Datetime('Change Stage Time')
     duration_change_stage = fields.Char(compute='_compute_duration_change_stage', string='Duration')
     
+
     # @api.depends('change_stage_time')
     def _compute_duration_change_stage(self):
         now = fields.datetime.now()
