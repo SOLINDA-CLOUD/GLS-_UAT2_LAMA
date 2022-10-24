@@ -51,15 +51,15 @@ class ProgresHistoryMaintenance(models.Model):
                 hours = diff.hours
                 minutes = diff.minutes
                 if years > 0:
-                    i.duration = str(years) + " Tahun " + str(months) + " bulan " + str(days) + " Hari" + str(hours) + " jam " + str(minutes) + " menit"
+                    i.duration = str(years) + " Year " + str(months) + " month " + str(days) + " day" + str(hours) + " jam " + str(minutes) + " menit"
                 elif months > 0:
-                    i.duration = str(months) + " Bulan " + str(days) + " hari " + str(hours) + " jam " + str(minutes) + " menit"
+                    i.duration = str(months) + " Month " + str(days) + " day " + str(hours) + " hour " + str(minutes) + " menit"
                 elif days > 0:
-                    i.duration = str(days) + " Hari " + str(hours) + " jam " + str(minutes) + " menit"
+                    i.duration = str(days) + " Days " + str(hours) + " hours " + str(minutes) + " minutes"
                 elif hours > 0:
-                    i.duration = str(hours) + " Jam " + str(minutes) + " menit"
+                    i.duration = str(hours) + " hours " + str(minutes) + " minutes"
                 else:
-                    i.duration =str(minutes) + " Menit " + str(diff.seconds) + " detik"
+                    i.duration =str(minutes) + " minutes " + str(diff.seconds) + " seconds"
             else:
                 i.duration = False
 
