@@ -1,6 +1,16 @@
 from odoo import _, api, fields, models
 from dateutil import relativedelta
 
+class HistoryEquipmentUsage(models.Model):
+    _name = 'history.equipment.usage'
+    _description = 'History Equipment Usage'
+    
+    equipment_id = fields.Many2one('maintenance.equipment', string='Equipment')
+    from_time = fields.Datetime('From')
+    to_time = fields.Datetime('To')
+    notes = fields.Text('Notes')
+    maintenance_id = fields.Many2one('maintenance.request', string='Maintenance')
+
 class MaintenanceEquipment(models.Model):
     _inherit = 'maintenance.equipment'
 
@@ -41,15 +51,15 @@ class ProgresHistoryMaintenance(models.Model):
                 hours = diff.hours
                 minutes = diff.minutes
                 if years > 0:
-                    i.duration = str(years) + " Tahun " + str(months) + " bulan " + str(days) + " Hari" + str(hours) + " jam " + str(minutes) + " menit"
+                    i.duration = str(years) + " Year " + str(months) + " month " + str(days) + " day" + str(hours) + " jam " + str(minutes) + " menit"
                 elif months > 0:
-                    i.duration = str(months) + " Bulan " + str(days) + " hari " + str(hours) + " jam " + str(minutes) + " menit"
+                    i.duration = str(months) + " Month " + str(days) + " day " + str(hours) + " hour " + str(minutes) + " menit"
                 elif days > 0:
-                    i.duration = str(days) + " Hari " + str(hours) + " jam " + str(minutes) + " menit"
+                    i.duration = str(days) + " Days " + str(hours) + " hours " + str(minutes) + " minutes"
                 elif hours > 0:
-                    i.duration = str(hours) + " Jam " + str(minutes) + " menit"
+                    i.duration = str(hours) + " hours " + str(minutes) + " minutes"
                 else:
-                    i.duration =str(minutes) + " Menit " + str(diff.seconds) + " detik"
+                    i.duration =str(minutes) + " minutes " + str(diff.seconds) + " seconds"
             else:
                 i.duration = False
 
@@ -57,6 +67,7 @@ class MaintenanceRequest(models.Model):
     _inherit = 'maintenance.request'
     _description = 'Maintenance Request'
     
+    equipment_history_line = fields.One2many('history.equipment.usage', 'maintenance_id', string='Equipment History')
     progres_history_line = fields.One2many('progres.history.maintenance', 'maintenance_id', string='Progress History')
     action_plan_line = fields.One2many('action.plan.maintenance', 'maintenance_id', string='Action Plan')
     shutdown_id = fields.Many2one('shutdown.system', string='Shutdown')
@@ -68,6 +79,7 @@ class MaintenanceRequest(models.Model):
     change_stage_time = fields.Datetime('Change Stage Time')
     duration_change_stage = fields.Char(compute='_compute_duration_change_stage', string='Duration')
     
+
     # @api.depends('change_stage_time')
     def _compute_duration_change_stage(self):
         now = fields.datetime.now()

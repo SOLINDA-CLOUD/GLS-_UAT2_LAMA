@@ -8,6 +8,7 @@
         <xpath expr="//field[@name='stage_id']" position="before">
           <field name="change_stage_time" widget="remaining_days"/>
           <field name="duration_change_stage" invisible="1"/>
+          <field name="attachment_ids" />
         </xpath>
       </field>
     </record>
