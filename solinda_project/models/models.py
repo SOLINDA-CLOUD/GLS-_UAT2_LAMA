@@ -1,3 +1,4 @@
+import string
 from odoo import models, fields, api
 from dateutil import relativedelta
 
@@ -6,6 +7,7 @@ class ProjectTask(models.Model):
 
   change_stage_time = fields.Datetime('Change Stage Time',store=True)
   duration_change_stage = fields.Char(string='Duration')
+  attachment_ids = fields.One2many(string='Attachments')
 
   @api.onchange('stage_id')
   def _onchange_stagescrm_id(self):
