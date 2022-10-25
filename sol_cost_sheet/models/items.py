@@ -206,7 +206,7 @@ class Item(models.Model):
         if analytic_account_existing:
             return analytic_account_id.id
         else:
-            analytic_account_id = i.env['account.analytic.account'].create({'name':analytic_name})
+            analytic_account_id = self.env['account.analytic.account'].create({'name':analytic_name})
             return analytic_account_id
 
 
