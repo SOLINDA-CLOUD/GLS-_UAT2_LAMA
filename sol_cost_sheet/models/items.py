@@ -207,7 +207,7 @@ class Item(models.Model):
             return analytic_account_existing.id
         else:
             analytic_account_id = self.env['account.analytic.account'].create({'name':analytic_name})
-            return analytic_account_id
+            return analytic_account_id.id
 
 
     def create_purchase_request(self):
