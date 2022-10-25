@@ -11,6 +11,7 @@
                     <sheet>
                         <group>
                             <field name="project_ids" widget="many2many_tags" options="{'no_create': True}"/>
+                            <field name="name" invisible="1"/>
                         </group>
                     </sheet>
                     <footer>
@@ -20,15 +21,15 @@
                 </form>
             </field>
         </record>
-    
+
         <record id="rap_report_wizard_action" model="ir.actions.act_window">
             <field name="name">RAP</field>
             <field name="res_model">rap.report.wizard</field>
             <field name="view_mode">form</field>
             <field name="target">new</field>
         </record>
-    
+
     </data>
-    
+
 
 </odoo>
