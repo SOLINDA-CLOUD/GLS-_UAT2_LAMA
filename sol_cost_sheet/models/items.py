@@ -200,7 +200,7 @@ class Item(models.Model):
                 # 'res_id': purchase.id,
         }
     
-    def create_analytic_account_id(self,code,seq)
+    def create_analytic_account_id(self,code,seq):
         analytic_name = code + " 1."+ str(seq)
         analytic_account_existing = self.env['account.analytic.account'].search([('name', '=', analytic_name)],limit=1)
         if analytic_account_existing:
