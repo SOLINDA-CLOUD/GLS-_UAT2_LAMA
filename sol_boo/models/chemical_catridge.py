@@ -44,13 +44,16 @@ class ChemicalCatridge(models.Model):
         for i in self:
             if i.sisa_tangki_kg and i.date and i.warehouse_id and i.product_id:
                 getyes = self.env["chemical.catridge"].search([("product_id", "=", i.product_id.id),("warehouse_id", "=", i.warehouse_id.id),('date','<',i.date ),('sisa_tangki_kg','>',0.0 )],limit = 1, order = 'date desc')
-                if getyes:
-                    i.pemakaian = getyes.sisa_tangki_kg - i.sisa_tangki_kg
+                if i.penuangan not in [0,False]:
+                    i.pemakaian = getyes.sisa_tangki_kg
                 else:
-                    i.pemakaian = 0
+                    if getyes:
+                        i.pemakaian = getyes.sisa_tangki_kg - i.sisa_tangki_kg
+                    else:
+                        i.pemakaian = 0
             else:
                 i.pemakaian = 0
-
+           
 
     @api.depends('sisa_tangki','product_id')
     def _compute_sisa_tangki_kg(self):
