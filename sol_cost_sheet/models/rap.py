@@ -21,6 +21,7 @@ class CsRAP(models.Model):
         ('submit', 'Submited'),
         ('waiting', 'Waiting Approval'),
         ('done', 'Approved'),
+        ('close', 'Closed'),
         ('revisied', 'Revisied'),
         ('cancel', 'Rejected'),
     ], string='Status',tracking=True, default="draft")
@@ -28,7 +29,6 @@ class CsRAP(models.Model):
     ga_project_line_ids = fields.One2many('ga.project', 'rap_id', string='GA Project Line')
     waranty_line_ids = fields.One2many('waranty.waranty', 'rap_id', string='Waranty Line')
 
-    
     total_amount = fields.Float(compute='_compute_total_amount', string='Total Amount',store=True)
     total_amount_rab = fields.Float(compute='_compute_total_amount', string='Total RAB Amount',store=True)
 

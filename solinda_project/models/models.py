@@ -2,12 +2,30 @@ import string
 from odoo import models, fields, api
 from dateutil import relativedelta
 
+class ProjectProjectStage(models.Model):
+    _inherit = 'project.project.stage'
+
+    is_closed = fields.Boolean('End of stage')    
+
 class ProjectTask(models.Model):
   _inherit = 'project.task'
 
   change_stage_time = fields.Datetime('Change Stage Time',store=True)
   duration_change_stage = fields.Char(string='Duration')
   attachment_ids = fields.One2many(string='Attachments')
+  percentage_done = fields.Float(compute='_compute_percentage_done', string='Percentage')
+  
+  @api.depends('child_ids')
+  def _compute_percentage_done(self):
+    for i in self:
+      n = len(i.child_ids.ids)
+      done = i.child_ids.filtered(lambda x:x.stage_id.is_closed == True)
+      if n and done:
+        i.percentage_done = done/n
+      else:
+        i.percentage_done = 0
+
+
 
   @api.onchange('stage_id')
   def _onchange_stagescrm_id(self):

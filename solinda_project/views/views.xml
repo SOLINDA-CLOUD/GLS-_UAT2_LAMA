@@ -8,6 +8,7 @@
         <xpath expr="//field[@name='stage_id']" position="before">
           <field name="change_stage_time" widget="remaining_days"/>
           <field name="duration_change_stage" invisible="1"/>
+          <field name="percentage_done" invisible="1"/>
           <field name="attachment_ids" />
         </xpath>
       </field>
@@ -34,6 +35,21 @@
       <field name="arch" type="xml">
         <xpath expr="//notebook/page[@name='extra_info']/group/group/field[@name='sequence']" position="after">
           <field name="change_stage_time" force_save="1" invisible="1"/>
+        </xpath>
+      </field>
+    </record>
+
+    <record id="project_enterprise_inherit_projecttask" model="ir.ui.view">
+      <field name="name">project.task.view.gantt.inherit</field>
+      <field name="model">project.task</field>
+      <field name="inherit_id" ref="project_enterprise.project_task_view_gantt"/>
+      <field name="arch" type="xml">
+        <xpath expr="//templates/div[@t-name='gantt-popove']" position="inside">
+          <!-- Add your fields here -->
+          <div t-if="percentage_done">
+            <strong>Progress — </strong>
+            <t t-esc="percentage_done"/>
+          </div>
         </xpath>
       </field>
     </record>
