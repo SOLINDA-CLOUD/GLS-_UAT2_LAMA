@@ -205,7 +205,7 @@ class Item(models.Model):
         analytic_name = code + " 1."+ str(seq)
         analytic_account_existing = self.env['account.analytic.account'].search([('name', '=', analytic_name)],limit=1)
         if analytic_account_existing:
-            return analytic_account_id.id
+            return analytic_account_existing.id
         else:
             analytic_account_id = self.env['account.analytic.account'].create({'name':analytic_name})
             return analytic_account_id
