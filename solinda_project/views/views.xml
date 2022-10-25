@@ -8,7 +8,7 @@
         <xpath expr="//field[@name='stage_id']" position="before">
           <field name="change_stage_time" widget="remaining_days"/>
           <field name="duration_change_stage" invisible="1"/>
-          <field name="percentage_done" widget="percentage" invisible="0" optional="hide"/>
+          <field name="percentage_done" widget="percentage" invisible="1" optional="hide"/>
           <field name="percentage_done_char" invisible="0" optional="hide"/>
           <field name="attachment_ids" />
         </xpath>
@@ -36,8 +36,8 @@
       <field name="arch" type="xml">
         <xpath expr="//notebook/page[@name='extra_info']/group/group/field[@name='sequence']" position="after">
           <field name="change_stage_time" force_save="1" invisible="1"/>
-          <field name="percentage_done" widget="percentage" invisible="0"/>
-          <field name="percentage_done_char" invisible="0"/>
+          <field name="percentage_done" widget="percentage" invisible="1"/>
+          <field name="percentage_done_char" invisible="1"/>
         </xpath>
       </field>
     </record>
@@ -53,6 +53,9 @@
             <strong>Progress — </strong>
             <t t-esc="percentage_done_char"/>
           </div>
+        </xpath>
+        <xpath expr="//templates" position="after">
+          <field name="percentage_done_char"/>
         </xpath>
       </field>
     </record>
