@@ -223,7 +223,7 @@ class Item(models.Model):
                 'line_ids':[(0,0,{
                     'product_id': item.product_id.id,
                     'product_qty': item.product_qty,
-                    'analytic_account_id': i.create_analytic_account_id(item.project_code,item.rap_category_id.sequence+1),
+                    'analytic_account_id': item.create_analytic_account_id(item.project_code,item.rap_category_id.sequence+1),
                     'estimated_cost': item.rfq_price,
                     'item_id': item.id,
                     'project_code':item.project_code               
