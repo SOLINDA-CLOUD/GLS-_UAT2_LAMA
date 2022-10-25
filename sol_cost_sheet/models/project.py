@@ -36,6 +36,8 @@ class ProjectProject(models.Model):
                 # if i.stage_id.is_closed and i.env.user.id != i.user_id.id:
                 if i.env.user.id != i.user_id.id:
                     raise ValidationError("Only project manager can change stage into done!")
+                if i.rap_id and i.stage_id.is_closed:
+                    i.rap_id.state = 'close'
         return super(ProjectProject, self).write(vals)
 
 
@@ -45,7 +47,8 @@ class ProjectProject(models.Model):
             # if i.stage_id.is_closed and i.env.user.id != i.user_id.id:
             if i.env.user.id != i.user_id.id:
                 raise ValidationError("Only project manager can change stage into done!")
-
+            if i.rap_id and i.stage_id.is_closed:
+                i.rap_id.state = 'close'
 
     def create_rap(self):
         rap = self.env['rap.rap'].create({
