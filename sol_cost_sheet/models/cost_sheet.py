@@ -195,10 +195,10 @@ class CostSheet(models.Model):
             this.project_value = this.subtotal + this.subtotal_non_project
     
     
-    @api.depends('ga_project','project_hse','car','financial_cost','bank_guarantee','contigency','other_price')
+    @api.depends('ga_project','project_hse','car','financial_cost','bank_guarantee','contigency','waranty','other_price')
     def _compute_subtotal_non_project(self):
         for this in self:
-            this.subtotal_non_project = sum([this.ga_project,this.project_hse,this.car,this.financial_cost,this.bank_guarantee,this.contigency,this.other_price])
+            this.subtotal_non_project = sum([this.ga_project,this.project_hse,this.car,this.financial_cost,this.bank_guarantee,this.contigency,this.waranty,this.other_price])
     
         
     @api.depends('ga_project_line_ids.total_price')
