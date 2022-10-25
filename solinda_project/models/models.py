@@ -14,6 +14,7 @@ class ProjectTask(models.Model):
   duration_change_stage = fields.Char(string='Duration')
   attachment_ids = fields.One2many(string='Attachments')
   percentage_done = fields.Float(compute='_compute_percentage_done', string='Percentage')
+  percentage_done_char = fields.Float(compute='_compute_percentage_done', string='Percentage')
   
   @api.depends('child_ids')
   def _compute_percentage_done(self):
@@ -21,8 +22,11 @@ class ProjectTask(models.Model):
       n = len(i.child_ids.ids)
       done = i.child_ids.filtered(lambda x:x.stage_id.is_closed == True)
       if n and done:
-        i.percentage_done = done/n
+        p = done/n
+        i.percentage_done = p
+        i.percentage_done_char = str(p*100)+"%"
       else:
+        i.percentage_done_char = "0%"
         i.percentage_done = 0
 
 
