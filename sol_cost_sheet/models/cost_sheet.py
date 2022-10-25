@@ -371,7 +371,12 @@ class GaProject(models.Model):
     
     @api.depends('product_id')
     def _compute_realization_price(self):
-        self.realization_price = 0
+        for i in self:
+            if i.product_id:
+                data = sum(i.env['account.move.line'].search([('product_id', '=', i.product_id.id)]).mapped('price_subtotal'))
+                i.realization_price = data
+            else:
+                i.realization_price = 0
     
     @api.depends('product_qty','rfq_price')
     def _compute_total_price(self):
@@ -417,7 +422,12 @@ class WarantyWaranty(models.Model):
     
     @api.depends('product_id')
     def _compute_realization_price(self):
-        self.realization_price = 0
+        for i in self:
+            if i.product_id:
+                data = sum(i.env['account.move.line'].search([('product_id', '=', i.product_id.id)]).mapped('price_subtotal'))
+                i.realization_price = data
+            else:
+                i.realization_price = 0
     
     @api.depends('product_qty','rfq_price')
     def _compute_total_price(self):
