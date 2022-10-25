@@ -366,8 +366,12 @@ class GaProject(models.Model):
     rfq_price = fields.Float('RFQ Price', store=True)
     total_price = fields.Float(compute='_compute_total_price', string='Total Price',store=True)
     rap_price = fields.Float('RAP Total Price')
-    
     remarks = fields.Text('Remarks')
+    realization_price = fields.Float(compute='_compute_realization_price', string='Realization Price')
+    
+    @api.depends('product_id')
+    def _compute_realization_price(self):
+        self.realization_price = 0
     
     @api.depends('product_qty','rfq_price')
     def _compute_total_price(self):
@@ -409,7 +413,11 @@ class WarantyWaranty(models.Model):
     total_price = fields.Float(compute='_compute_total_price', string='Total Price',store=True)
     remarks = fields.Text('Remarks')
     rap_price = fields.Float('RAP Price')
-
+    realization_price = fields.Float(compute='_compute_realization_price', string='Realization Price')
+    
+    @api.depends('product_id')
+    def _compute_realization_price(self):
+        self.realization_price = 0
     
     @api.depends('product_qty','rfq_price')
     def _compute_total_price(self):
