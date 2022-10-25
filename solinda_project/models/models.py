@@ -20,7 +20,7 @@ class ProjectTask(models.Model):
   def _compute_percentage_done(self):
     for i in self:
       n = len(i.child_ids.ids)
-      done = i.child_ids.filtered(lambda x:x.stage_id.is_closed == True)
+      done = len(i.child_ids.filtered(lambda x:x.stage_id.is_closed == True).ids)
       if n and done:
         p = done/n
         i.percentage_done = p
