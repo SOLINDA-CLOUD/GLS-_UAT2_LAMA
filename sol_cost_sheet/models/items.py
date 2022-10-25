@@ -218,7 +218,6 @@ class Item(models.Model):
         for i in self:
             if i[0].rap_id.state == 'waiting':
                 raise ValidationError("Cannot create Purchase Request because RAP with number %s is waiting for approval"%(i.rap_id.name))
-            analytic_account_id = 
             purchase = i.env['purchase.request'].create({
                 'project_code':i.project_code,           
                 'line_ids':[(0,0,{
