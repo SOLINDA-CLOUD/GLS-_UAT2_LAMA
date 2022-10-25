@@ -200,6 +200,16 @@ class Item(models.Model):
                 # 'res_id': purchase.id,
         }
     
+    def create_analytic_account_id(self,code,seq)
+        analytic_name = code + " 1."+ str(seq)
+        analytic_account_existing = self.env['account.analytic.account'].search([('name', '=', analytic_name)],limit=1)
+        if analytic_account_existing:
+            return analytic_account_id.id
+        else:
+            analytic_account_id = i.env['account.analytic.account'].create({'name':analytic_name})
+            return analytic_account_id
+
+
     def create_purchase_request(self):
         # items = [item.product_id.name for item in self if not item.can_be_purchased] # Pengecekan product/item yang tidak dapat create purchase karna qty_on_hand lebih atau sama dengan quantity  
         # if items:
@@ -208,11 +218,13 @@ class Item(models.Model):
         for i in self:
             if i[0].rap_id.state == 'waiting':
                 raise ValidationError("Cannot create Purchase Request because RAP with number %s is waiting for approval"%(i.rap_id.name))
+            analytic_account_id = 
             purchase = i.env['purchase.request'].create({
                 'project_code':i.project_code,           
                 'line_ids':[(0,0,{
                     'product_id': item.product_id.id,
                     'product_qty': item.product_qty,
+                    'analytic_account_id': i.create_analytic_account_id(item.project_code,item.rap_category_id.sequence+1),
                     'estimated_cost': item.rfq_price,
                     'item_id': item.id,
                     'project_code':item.project_code               

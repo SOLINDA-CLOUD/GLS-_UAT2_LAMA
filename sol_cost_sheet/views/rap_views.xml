@@ -54,12 +54,12 @@
                             <field name="approver_id" invisible="1" />
                             <field name="is_approver" invisible="1" />
                             <field name="revision_on" invisible="1" />
-
                         </group>
                         <notebook>
                             <page string="Category">
                                 <field name="category_line_ids" attrs="{'readonly':[('state','!=','draft')]}">
                                     <tree editable="bottom">
+                                        <field name="sequence" widget="handle"/>
                                         <field name="product_id" />
                                         <field name="rab_price" />
                                         <field name="rap_price"/>
@@ -94,7 +94,6 @@
                                         <field name="rfq_price" force_save="1"/>
                                         <field name="total_price" />
                                         <field name="remarks" />
-
                                     </tree>
                                 </field>
                             </page>
@@ -111,7 +110,6 @@
                                         <field name="rfq_price" force_save="1"/>
                                         <field name="total_price" />
                                         <field name="remarks" />
-
                                     </tree>
                                 </field>
                             </page>

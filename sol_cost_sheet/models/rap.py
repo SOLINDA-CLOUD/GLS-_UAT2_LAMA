@@ -157,6 +157,7 @@ class RapCategory(models.Model):
     _description = 'Rap Category'
     _rec_name = 'product_id'
 
+    sequence = fields.Integer('Sequence')
     rap_id = fields.Many2one('rap.rap', string='RAP',ondelete="cascade")
     project_id = fields.Many2one('project.project', string='Project', related='rap_id.project_id', store=True)
     cost_sheet_id = fields.Many2one('cost.sheet', string='Cost Sheet',ondelete="cascade")
