@@ -1,3 +1,4 @@
+from datetime import datetime
 from odoo import _, api, fields, models
 from dateutil import relativedelta
 
@@ -79,6 +80,23 @@ class MaintenanceRequest(models.Model):
     change_stage_time = fields.Datetime('Change Stage Time')
     duration_change_stage = fields.Char(compute='_compute_duration_change_stage', string='Duration')
     
+    def write(self, vals):
+        phl = None
+        if 'stage_id' in vals:
+            phl = self.env['progres.history.maintenance'].sudo().create({
+                "maintenance_id" : self.id,
+                "start_date" : self.change_stage_time,
+                "stage_from" : self.stage_id.name
+            })
+        res = super(MaintenanceRequest, self).write(vals)
+        if 'stage_id' in vals and phl:
+            phl.write({
+                "end_date" : fields.datetime.now(),
+                "stage_to" : self.stage_id.name
+            })
+            self.change_stage_time = fields.datetime.now()
+        return res
+
 
     # @api.depends('change_stage_time')
     def _compute_duration_change_stage(self):

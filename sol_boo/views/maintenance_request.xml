@@ -60,7 +60,7 @@
                             </field>
                         </page>
                         <page name="progress_history" string="Progress History">
-                            <field name="progres_history_line" nolabel="1">
+                            <field name="progres_history_line" nolabel="1" readonly="1">
                                 <tree editable="bottom">
                                     <field name="start_date" />
                                     <field name="stage_from"/>
