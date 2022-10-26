@@ -33,7 +33,7 @@ class ReportingTroubleSystem(models.TransientModel):
     _name = 'reporting.trouble.system'
     _description = 'Reporting Trouble System'
 
-    type = fields.Selection([("backwash","Backwash"), ("cleaning","Cleaning")], string='Type')
+    type = fields.Selection([("backwash","Backwash"), ('grease', 'Grease'), ("cleaning","Cleaning")], string='Type')
     location_ids = fields.Many2many('stock.location', string='Lokasi',domain=[("usage", "=", "internal")])
     date_from = fields.Date('Date From')
     date_to = fields.Date('Date To')
@@ -48,6 +48,8 @@ class ReportingTroubleSystem(models.TransientModel):
                 datas['form'][field] = datas['form'][field][0]
         if self.type == 'backwash':
             return self.env.ref('sol_boo.backwash_xlsx').report_action(self, data=datas)
+        elif self.type == 'grease':
+            return self.env.ref('sol_boo.grease_xlsx').report_action(self, data=datas)
         else:
             return self.env.ref('sol_boo.cleaning_xlsx').report_action(self, data=datas)
 
@@ -560,6 +562,93 @@ class BackwashReport(models.AbstractModel):
             sheet.merge_range(4, 0, 5, 0, 'No', formatHeaderTable)
             sheet.merge_range(4, 1, 5, 1, 'Bulan', formatHeaderTable)
             sheet.merge_range(4, 2, 4, 32, 'Tanggal Backwash Media Filter', formatHeaderTable)
+            
+            column_subheader = 2
+            for seq_header in range(1, 32):
+                sheet.set_column(column_subheader, column_subheader, 5)
+                sheet.write(5, column_subheader, str(seq_header), formatSubHeaderTable)
+                column_subheader += 1
+            
+            row = 6
+            month_number = 1
+            months = ROW_YEARLY_1+ROW_YEARLY_2
+            empty_date = {2: [29, 30, 31], 4: [31], 6: [31], 9: [31], 11: [31]}
+            for month in months:
+                sheet.set_row(row, 25) 
+                sheet.write(row, 0, month_number, formatDetailTable)
+                sheet.write(row, 1, month, formatDetailTable)
+                for i in range(1, 32):
+                    if marker.get(month_number, False) and i in marker[month_number]:
+                        sheet.write(row, i+1, '', formatDetailTableRed)
+                    elif empty_date.get(month_number, False) and i in empty_date[month_number]:
+                        sheet.write(row, i+1, '', formatDetailTableBlack)
+                    else:
+                        sheet.write(row, i+1, '', formatDetailTable)
+                row += 1
+                month_number += 1
+
+
+class GreaseReport(models.AbstractModel):
+    _name = 'report.sol_boo.grease_report_xls.xlsx'
+    _inherit = 'report.report_xlsx.abstract'
+
+    def generate_xlsx_report(self, workbook, data, lines):
+        formatHeaderCompany = workbook.add_format({'font_size': 14, 'valign':'vcenter', 'align': 'center', 'bold': True})
+        formatSubTitle = workbook.add_format({'font_size': 12, 'valign':'vcenter', 'align': 'left', 'bold': False})
+        formatHeaderTable = workbook.add_format({'font_size': 12, 'valign':'vcenter', 'align': 'center', 'bold': True})
+        formatSubHeaderTable = workbook.add_format({'font_size': 12, 'valign':'vcenter', 'align': 'center', 'bold': False})
+        formatDetailTable = workbook.add_format({'font_size': 12, 'valign':'vcenter', 'align': 'center', 'bold': False})
+        formatDetailTableRed = workbook.add_format({'font_size': 12, 'valign':'vcenter', 'align': 'center', 'bold': False, 'bg_color':'red'})
+        formatDetailTableBlack = workbook.add_format({'font_size': 12, 'valign':'vcenter', 'align': 'center', 'bold': False, 'bg_color':'black'})
+
+        # formatHeaderCompany.set_border(1)
+        formatHeaderTable.set_border(1)
+        formatSubHeaderTable.set_border(1)
+        formatDetailTable.set_border(1)
+        formatDetailTableRed.set_border(1)
+        formatDetailTableBlack.set_border(1)
+
+        # formatHeaderCompany.set_text_wrap()
+        formatHeaderTable.set_text_wrap()
+        formatSubHeaderTable.set_text_wrap()
+        formatDetailTable.set_text_wrap()
+        formatDetailTableRed.set_text_wrap()
+        formatDetailTableBlack.set_text_wrap()
+
+        datas = data.get('form', {})
+        ln = datas.get('location_ids', False)
+        if ln:
+            location_ids = self.env['stock.location'].sudo().search([('id', 'in', ln)])
+        else:
+            location_ids = self.env['stock.location'].sudo().search([('usage', '=', 'internal')])
+        for location in location_ids:
+            location_id = location
+            trouble_system_ids = self.env['shutdown.system'].sudo().search([
+                ('warehouse_id', '=', location_id.id),
+                ('type', '=', 'grease'),
+                ('time', '>=', datas.get('date_from')),
+                ('time', '<=', datas.get('date_to')),
+            ], order='time asc')
+            marker = {}
+            for ts in trouble_system_ids:
+                if ts.time.month not in marker.keys():
+                    marker[ts.time.month] = []
+                marker[ts.time.month].append(ts.time.day)
+
+            title = location_id.display_name
+            sheet = workbook.add_worksheet(title)
+
+            sheet.set_column(0, 0, 5)
+            sheet.set_column(1, 1, 15)
+
+            header_title = 'Monitoring Penggunaan Grease'
+            sheet.merge_range(1, 0, 2, 32, header_title, formatHeaderCompany)
+            sub_title = f'Lokasi : {location_id.display_name}'
+            sheet.merge_range(3, 1, 3, 3, sub_title, formatSubTitle)
+
+            sheet.merge_range(4, 0, 5, 0, 'No', formatHeaderTable)
+            sheet.merge_range(4, 1, 5, 1, 'Bulan', formatHeaderTable)
+            sheet.merge_range(4, 2, 4, 32, 'Tanggal Grease Usage', formatHeaderTable)
             
             column_subheader = 2
             for seq_header in range(1, 32):
