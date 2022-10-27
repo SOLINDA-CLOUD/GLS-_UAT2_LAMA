@@ -190,7 +190,7 @@ class CsRAP(models.Model):
     #         this.contigency = this.subtotal * this.contigency_percent
             
     
-    @api.depends('waranty_line_ids.total_price','project_value')
+    @api.depends('waranty_line_ids.total_price')
     def _compute_waranty(self):
         for this in self:
             this.waranty = sum(this.waranty_line_ids.mapped('total_price'))
