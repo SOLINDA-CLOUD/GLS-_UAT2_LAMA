@@ -208,7 +208,7 @@ class CsRAP(models.Model):
             if this.project_value:
                 this.est_profit_percent = this.est_profit / this.project_value * 100
             else:
-                return
+                this.est_profit_percent = 0
 
 class RapCategory(models.Model):
     _name = 'rap.category'
