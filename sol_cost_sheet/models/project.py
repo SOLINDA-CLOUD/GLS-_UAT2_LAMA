@@ -70,7 +70,9 @@ class ProjectProject(models.Model):
                 'bank_guarantee': self.rab_id.bank_guarantee,
                 'contigency': self.rab_id.contigency,
                 'other_price': self.rab_id.other_price,
-                'waranty': self.rab_id.waranty
+                'waranty': self.rab_id.waranty,
+                'project_value': self.rab_id.project_value,
+                'total_cost_roundup': self.rab_id.total_cost_roundup,
         })
         
         for category in self.rab_id.category_line_ids:

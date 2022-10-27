@@ -85,12 +85,15 @@
                                     <group colspan="4">
                                         <field name="note" nolabel="1" placeholder="Terms and conditions..." attrs="{'readonly':[('state','!=','draft')]}"/>
                                     </group>
-                                    <group class="oe_subtotal_footer oe_right" colspan="2" name="sale_total">
-                                        <field name="total_amount_rab" />
-                                        <div class="oe_subtotal_footer_separator oe_inline o_td_label">
-                                            <label for="total_amount"/>
-                                        </div>
-                                        <field name="total_amount" nolabel="1" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                    <group class="oe_subtotal_footer oe_right" colspan="2" name="total_rap">
+                                        <field name="project_value" />
+                                        <field name="total_cost_round_up" />
+                                        <field name="actual_cost" />
+                                        <field name="est_to_completion" />
+                                        <field name="est_at_completion" />
+                                        <field name="est_under" />
+                                        <field name="est_profit" />
+                                        <field name="est_profit_percent" />
                                     </group>
                                     <div class="oe_clear"/>
                                 </group>

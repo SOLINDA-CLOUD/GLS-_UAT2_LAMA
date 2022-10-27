@@ -46,9 +46,17 @@ class CsRAP(models.Model):
     financial_cost = fields.Float('Financial Cost During Constructio')
     bank_guarantee = fields.Float('Bank Guarantee')
     contigency = fields.Float('Contigency')
-    waranty = fields.Float('Waranty',compute="_compute_waranty",store=True,copy=True)
-    other_price = fields.Float('Other')    
+    waranty = fields.Float('Warranty',compute="_compute_waranty",store=True,copy=True)
+    other_price = fields.Float('Other')
 
+    project_value = fields.Float(string='Project Cost', readonly=True)
+    total_cost_round_up = fields.Float('Sales (Round Up)', readonly=True)
+    actual_cost = fields.Float('ACWP (Actual Cost)', compute="_compute_actual_cost", store=True)
+    est_to_completion = fields.Float(string='Estimate To Completion')
+    est_at_completion = fields.Float(string='Estimate At Completion', compute="_compute_estimate_at", store=True)
+    est_under = fields.Float(string="Estimate Under Budget", compute="_compute_estimate_under", store=True)
+    est_profit = fields.Float(string="Estimate Profit(IDR)", compute="_compute_estimate_profit", store=True)
+    est_profit_percent = fields.Float(string="Estimate Profit(%)", compute="_compute_profit_percent")
 
     @api.model
     def create(self, vals):
@@ -165,37 +173,39 @@ class CsRAP(models.Model):
         for this in self:
             this.ga_project = sum(this.ga_project_line_ids.mapped('total_price'))
     
-    # @api.depends('ga_project','project_hse_percent')
-    # def _compute_project_hse(self):
-    #     for this in self:
-    #         this.project_hse = this.ga_project * this.project_hse_percent
-            
-    # @api.depends('subtotal','car_percent')
-    # def _compute_car(self):
-    #     for this in self:
-    #         this.car = this.subtotal * this.car_percent
-            
-    # @api.depends('project_value','financial_cost')
-    # def _compute_fin_cost_percent(self):
-    #     for this in self:
-    #         this.financial_cost_percent = this.financial_cost / this.project_value if this.financial_cost >0 and this.project_value > 0 else 0.0
-    # @api.depends('project_value','bank_guarantee')
-    # def _compute_bank_guarantee_percent(self):
-    #     for this in self:
-    #         this.bank_guarantee_percent = this.bank_guarantee / this.project_value if this.bank_guarantee >0 and this.project_value > 0 else 0.0
-
-    # @api.depends('subtotal','contigency_percent')
-    # def _compute_contigency(self):
-    #     for this in self:
-    #         this.contigency = this.subtotal * this.contigency_percent
-            
-    
     @api.depends('waranty_line_ids.total_price')
     def _compute_waranty(self):
         for this in self:
             this.waranty = sum(this.waranty_line_ids.mapped('total_price'))
     
+    @api.depends('ga_project_line_ids.realization_price','waranty_line_ids.realization_price','category_line_ids.price_unit')
+    def _compute_actual_cost(self):
+        for this in self:
+            price_category = sum(this.category_line_ids.mapped('price_unit'))
+            realization_ga = sum(this.ga_project_line_ids.mapped('realization_price'))
+            realization_warranty = sum(this.waranty_line_ids.mapped('realization_price'))
+            total = price_category + realization_ga + realization_warranty
+            this.actual_cost = total
 
+    @api.depends('est_to_completion', 'actual_cost')
+    def _compute_estimate_at(self):
+        for this in self:
+            this.est_at_completion = this.est_to_completion + this.actual_cost
+
+    @api.depends('total_cost_round_up', 'est_at_completion')
+    def _compute_estimate_under(self):
+        for this in self:
+            this.est_under = this.total_cost_round_up - this.est_at_completion
+
+    @api.depends('project_value', 'est_under')
+    def _compute_estimate_profit(self):
+        for this in self:
+            this.est_profit = this.project_value - this.est_under
+
+    @api.depends('est_profit')
+    def _compute_profit_percent(self):
+        for this in self:
+            this.est_profit_percent = this.est_profit / this.project_value * 100
 
 class RapCategory(models.Model):
     _name = 'rap.category'
