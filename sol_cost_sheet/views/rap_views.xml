@@ -85,7 +85,7 @@
                                     <group colspan="4">
                                         <field name="note" nolabel="1" placeholder="Terms and conditions..." attrs="{'readonly':[('state','!=','draft')]}"/>
                                     </group>
-                                    <group class="oe_subtotal_footer oe_right" colspan="2" name="total_rap">
+                                    <group class="oe_subtotal_footer oe_right" colspan="2" name="sale_total">
                                         <field name="project_value" />
                                         <field name="total_cost_round_up" />
                                         <field name="actual_cost" />
@@ -93,7 +93,7 @@
                                         <field name="est_at_completion" />
                                         <field name="est_under" />
                                         <field name="est_profit" />
-                                        <field name="est_profit_percent" />
+                                        <field name="est_profit_percent" widget="percentage" />
                                     </group>
                                     <div class="oe_clear"/>
                                 </group>
