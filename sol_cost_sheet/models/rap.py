@@ -205,7 +205,10 @@ class CsRAP(models.Model):
     @api.depends('est_profit')
     def _compute_profit_percent(self):
         for this in self:
-            this.est_profit_percent = this.est_profit / this.project_value * 100
+            if this.project_value:
+                this.est_profit_percent = this.est_profit / this.project_value * 100
+            else:
+                return
 
 class RapCategory(models.Model):
     _name = 'rap.category'
