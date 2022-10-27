@@ -67,6 +67,19 @@
                                         <button name="action_view_detail_rap" type="object" icon="fa-pencil-square-o" />
                                     </tree>
                                 </field>
+                                <group name="non_project" class="mb32">
+                                    <group string="Non Project" col="2">
+
+                                        <field name="ga_project" />
+                                        <field name="project_hse" />
+                                        <field name="car" />
+                                        <field name="financial_cost" string="Financial Cost" attrs="{'readonly': [('state','!=','draft')]}"/>
+                                        <field name="bank_guarantee" attrs="{'readonly': [('state','!=','draft')]}"/>
+                                        <field name="contigency" attrs="{'readonly': [('state','!=','draft')]}"/>
+                                        <field name="waranty" />
+                                        <field name="other_price" attrs="{'readonly': [('state','!=','draft')]}"/>
+                                    </group>
+                                </group>
 
                                 <group name="note_group" col="6" class="mt-2 mt-md-0">
                                     <group colspan="4">

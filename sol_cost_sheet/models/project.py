@@ -62,9 +62,15 @@ class ProjectProject(models.Model):
                     'product_id': rab.product_id.id,
                     'rab_price': rab.price,
                     # 'product_qty':
-                    'price_unit': rab.price
-                
-                }) for rab in self.rab_id.category_line_ids]
+                    'price_unit': rab.price}) for rab in self.rab_id.category_line_ids],
+                'ga_project': self.rab_id.ga_project,
+                'project_hse': self.rab_id.project_hse,
+                'car': self.rab_id.car,
+                'financial_cost': self.rab_id.financial_cost,
+                'bank_guarantee': self.rab_id.bank_guarantee,
+                'contigency': self.rab_id.contigency,
+                'other_price': self.rab_id.other_price,
+                'waranty': self.rab_id.waranty
         })
         
         for category in self.rab_id.category_line_ids:

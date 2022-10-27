@@ -38,7 +38,16 @@ class CsRAP(models.Model):
     project_code = fields.Char('Project Code', related="project_id.code")
     project_manager = fields.Many2one('res.users', string='Project Manager', related='project_id.user_id', required=True)
     revision_on = fields.Boolean(string='Revision',default=False)
-    
+
+    # Non Project
+    ga_project = fields.Float('GA Project', compute = "_compute_ga_project", store=True, copy=True)
+    project_hse = fields.Float('Project HSE')
+    car = fields.Float('Construction All Risk')
+    financial_cost = fields.Float('Financial Cost During Constructio')
+    bank_guarantee = fields.Float('Bank Guarantee')
+    contigency = fields.Float('Contigency')
+    waranty = fields.Float('Waranty',compute="_compute_waranty",store=True,copy=True)
+    other_price = fields.Float('Other')    
 
 
     @api.model
@@ -150,6 +159,42 @@ class CsRAP(models.Model):
             if self.product_id.last_purchase_price:
                 rfq_price = self.product_id.last_purchase_price
             self.rfq_price = rfq_price
+
+    @api.depends('ga_project_line_ids.total_price')
+    def _compute_ga_project(self):
+        for this in self:
+            this.ga_project = sum(this.ga_project_line_ids.mapped('total_price'))
+    
+    # @api.depends('ga_project','project_hse_percent')
+    # def _compute_project_hse(self):
+    #     for this in self:
+    #         this.project_hse = this.ga_project * this.project_hse_percent
+            
+    # @api.depends('subtotal','car_percent')
+    # def _compute_car(self):
+    #     for this in self:
+    #         this.car = this.subtotal * this.car_percent
+            
+    # @api.depends('project_value','financial_cost')
+    # def _compute_fin_cost_percent(self):
+    #     for this in self:
+    #         this.financial_cost_percent = this.financial_cost / this.project_value if this.financial_cost >0 and this.project_value > 0 else 0.0
+    # @api.depends('project_value','bank_guarantee')
+    # def _compute_bank_guarantee_percent(self):
+    #     for this in self:
+    #         this.bank_guarantee_percent = this.bank_guarantee / this.project_value if this.bank_guarantee >0 and this.project_value > 0 else 0.0
+
+    # @api.depends('subtotal','contigency_percent')
+    # def _compute_contigency(self):
+    #     for this in self:
+    #         this.contigency = this.subtotal * this.contigency_percent
+            
+    
+    @api.depends('waranty_line_ids.total_price','project_value')
+    def _compute_waranty(self):
+        for this in self:
+            this.waranty = sum(this.waranty_line_ids.mapped('total_price'))
+    
 
 
 class RapCategory(models.Model):
