@@ -53,7 +53,7 @@ class CostSheet(models.Model):
     contigency_percent = fields.Float('Contigency Percent',copy=True)
     other_price = fields.Float('Other')
     waranty = fields.Float('Waranty',compute="_compute_waranty",store=True,copy=True)
-    waranty_percent = fields.Float('Waranty Percent',copy=True)
+    waranty_percent = fields.Float('Warranty Percent',copy=True)
     
     pph = fields.Float('PPh',copy=True)
     

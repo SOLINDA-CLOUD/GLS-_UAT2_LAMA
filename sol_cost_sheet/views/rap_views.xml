@@ -94,6 +94,8 @@
                                         <field name="est_under" />
                                         <field name="est_profit" />
                                         <field name="est_profit_percent" widget="percentage" />
+                                        <div class="oe_subtotal_footer_separator oe_inline o_td_label">
+                                        </div>
                                     </group>
                                     <div class="oe_clear"/>
                                 </group>
