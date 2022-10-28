@@ -81,7 +81,7 @@
                                     </group>
                                 </group>
 
-                                <group name="note_group" col="6" class="mt-2 mt-md-0">
+                                <group name="note_group" col="6" class="mb32">
                                     <group colspan="4">
                                         <field name="note" nolabel="1" placeholder="Terms and conditions..." attrs="{'readonly':[('state','!=','draft')]}"/>
                                     </group>
