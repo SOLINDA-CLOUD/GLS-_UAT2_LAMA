@@ -94,10 +94,6 @@
                                         <field name="est_under" />
                                         <field name="est_profit" />
                                         <field name="est_profit_percent" widget="percentage" />
-                                        <div class="oe_subtotal_footer_separator oe_inline o_td_label">
-                                            <label for="total_amount"/>
-                                        </div>
-                                        <field name="total_amount" nolabel="1" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                                     </group>
                                     <div class="oe_clear"/>
                                 </group>
