@@ -72,7 +72,7 @@ class ProjectProject(models.Model):
                 'other_price': self.rab_id.other_price,
                 'waranty': self.rab_id.waranty,
                 'project_value': self.rab_id.project_value,
-                'total_cost_roundup': self.rab_id.total_cost_roundup,
+                'total_cost_round_up': self.rab_id.total_cost_round_up,
         })
         
         for category in self.rab_id.category_line_ids:
