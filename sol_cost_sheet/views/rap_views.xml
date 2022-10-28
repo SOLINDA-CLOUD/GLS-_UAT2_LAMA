@@ -99,7 +99,7 @@
                                 </group>
                             </page>
                             <page name="ga_project" string="GA Project">
-                                <field name="ga_project_line_ids" readonly="1">
+                                <field name="ga_project_line_ids" attrs="{'readonly': [('state','!=','draft')]}">
                                     <tree editable="bottom">
                                         <field name="product_id" required="1" />
                                         <field name="product_qty" />
@@ -115,7 +115,7 @@
                             </page>
 
                             <page name="waranty" string="Warranty">
-                                <field name="waranty_line_ids" readonly="1">
+                                <field name="waranty_line_ids" attrs="{'readonly': [('state','!=','draft')]}">
                                     <tree editable="bottom">
                                         <field name="product_id" required="1" />
                                         <field name="product_qty" />
