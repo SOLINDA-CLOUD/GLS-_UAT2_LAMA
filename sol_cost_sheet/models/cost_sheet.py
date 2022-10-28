@@ -355,7 +355,7 @@ class GaProject(models.Model):
     _description = 'Ga Project'
     
     cost_sheet_id = fields.Many2one('cost.sheet', string='Cost Sheet',ondelete="cascade")
-    rap_id = fields.Many2one('rap.rap', string='Cost Sheet',ondelete="cascade")
+    rap_id = fields.Many2one('cost.sheet', string='Cost Sheet',ondelete="cascade")
     product_id = fields.Many2one('product.product',required=True)    
     product_qty = fields.Integer('Quantity')
     product_uom = fields.Many2one('uom.uom', string='Unit of Measure',
