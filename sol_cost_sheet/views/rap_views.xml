@@ -86,8 +86,8 @@
                                         <field name="note" nolabel="1" placeholder="Terms and conditions..." attrs="{'readonly':[('state','!=','draft')]}"/>
                                     </group>
                                     <group class="oe_subtotal_footer oe_right" colspan="2" name="sale_total">
-                                        <field name="project_value" />
                                         <field name="total_cost_round_up" />
+                                        <field name="project_value" />
                                         <field name="actual_cost" />
                                         <field name="est_to_completion" />
                                         <field name="est_at_completion" />

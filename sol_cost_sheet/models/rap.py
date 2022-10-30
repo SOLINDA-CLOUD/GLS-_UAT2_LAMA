@@ -49,8 +49,8 @@ class CsRAP(models.Model):
     waranty = fields.Float('Warranty',compute="_compute_waranty",store=True,copy=True)
     other_price = fields.Float('Other')
 
-    project_value = fields.Float(string='Project Cost', readonly=True)
-    total_cost_round_up = fields.Float('Sales (Round Up)', readonly=True)
+    total_cost_round_up = fields.Float('Nilai Project', readonly=True)
+    project_value = fields.Float(string='Budget', readonly=True)
     actual_cost = fields.Float('ACWP (Actual Cost)', compute="_compute_actual_cost", store=True)
     est_to_completion = fields.Float(string='Estimate To Completion')
     est_at_completion = fields.Float(string='Estimate At Completion', compute="_compute_estimate_at", store=True)
@@ -192,21 +192,21 @@ class CsRAP(models.Model):
         for this in self:
             this.est_at_completion = this.est_to_completion + this.actual_cost
 
-    @api.depends('total_cost_round_up', 'est_at_completion')
+    @api.depends('project_value', 'est_at_completion')
     def _compute_estimate_under(self):
         for this in self:
-            this.est_under = this.total_cost_round_up - this.est_at_completion
+            this.est_under = this.project_value - this.est_at_completion
 
-    @api.depends('project_value', 'est_under')
+    @api.depends('total_cost_round_up', 'est_under')
     def _compute_estimate_profit(self):
         for this in self:
-            this.est_profit = this.project_value - this.est_under
+            this.est_profit = this.total_cost_round_up - this.est_under
 
-    @api.depends('est_profit')
+    @api.depends('est_profit', 'total_cost_round_up')
     def _compute_profit_percent(self):
         for this in self:
-            if this.project_value:
-                this.est_profit_percent = this.est_profit / this.project_value * 100
+            if this.total_cost_round_up:
+                this.est_profit_percent = this.est_profit / this.total_cost_round_up * 100
             else:
                 this.est_profit_percent = 0
 
