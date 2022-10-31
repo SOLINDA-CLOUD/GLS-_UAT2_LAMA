@@ -197,10 +197,10 @@ class CsRAP(models.Model):
         for this in self:
             this.est_under = this.project_value - this.est_at_completion
 
-    @api.depends('total_cost_round_up', 'est_under')
+    @api.depends('total_cost_round_up', 'est_at_completion')
     def _compute_estimate_profit(self):
         for this in self:
-            this.est_profit = this.total_cost_round_up - this.est_under
+            this.est_profit = this.total_cost_round_up - this.est_at_completion
 
     @api.depends('est_profit', 'total_cost_round_up')
     def _compute_profit_percent(self):
