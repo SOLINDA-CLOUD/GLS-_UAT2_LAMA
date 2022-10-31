@@ -206,7 +206,7 @@ class CsRAP(models.Model):
     def _compute_profit_percent(self):
         for this in self:
             if this.total_cost_round_up:
-                this.est_profit_percent = this.est_profit / this.total_cost_round_up * 100
+                this.est_profit_percent = this.est_profit / this.total_cost_round_up
             else:
                 this.est_profit_percent = 0
 
