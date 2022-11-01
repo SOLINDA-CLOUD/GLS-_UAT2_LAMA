@@ -8,16 +8,16 @@ class AccountAsset(models.Model):
         # raise UserError("You're about to pause the Depreciation")
         """ Returns an action opening the asset pause wizard."""
         self.ensure_one()
+        if not new_wizard:
+            return {
+                'warning': {
+                'title': "Pause Depreciation",
+                'message': "You're about to pause the Depreciation",
+                }
+            }    
         new_wizard = self.env['account.asset.pause'].create({
             'asset_id': self.id,
         })
-        if new_wizard:
-            return {
-                'warning': {
-                'title': _("Pause Depreciation"),
-                'message': _("You're about to pause the Depreciation"),
-                }
-            }    
 
         return {
             'name': _('Pause Asset'),
