@@ -11,6 +11,14 @@ class AccountAsset(models.Model):
         new_wizard = self.env['account.asset.pause'].create({
             'asset_id': self.id,
         })
+        if new_wizard:
+            return {
+                'warning': {
+                'title': _("Pause Depreciation"),
+                'message': _("You're about to pause the Depreciation"),
+                }
+            }    
+
         return {
             'name': _('Pause Asset'),
             'view_mode': 'form',
@@ -18,8 +26,4 @@ class AccountAsset(models.Model):
             'type': 'ir.actions.act_window',
             'target': 'new',
             'res_id': new_wizard.id,
-            'warning': {
-                'title': _("Pause Depreciation"),
-                'message': _("You're about to pause the Depreciation"),
-            }
         }
