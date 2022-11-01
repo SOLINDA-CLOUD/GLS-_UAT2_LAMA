@@ -11,7 +11,7 @@
             </xpath>
 
             <xpath expr="button[@name='action_asset_pause']" position="replace">
-                <attribute name="attrs">{'invisible': ['|', ('state', '!=', 'open'), ('asset_type', '!=', 'purchase'),('pause_dep_check', '=', 'False')]}</attribute>
+                <attribute name="attrs">{'invisible': ['|', ('state', '!=', 'open'), ('asset_type', '!=', 'purchase'),('pause_dep_check', '=', False)]}</attribute>
             </xpath>
 
         </field>
