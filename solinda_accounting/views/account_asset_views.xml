@@ -6,7 +6,7 @@
         <field name="model">account.asset</field>
         <field name="inherit_id" ref="account_asset.view_account_asset_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//group/group/field[@name='first_depreciation_date']" position="after">
+            <xpath expr="//sheet/group/group[@name='Depreciation Method']" position="inside">
                 <field name="pause_dep_check" />
             </xpath>
 
