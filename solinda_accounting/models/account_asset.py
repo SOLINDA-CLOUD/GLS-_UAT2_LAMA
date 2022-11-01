@@ -5,7 +5,7 @@ class AccountAsset(models.Model):
     _inherit = 'account.asset'
 
     def action_asset_pause(self):
-        raise UserError("You're about to pause the Depreciation")
+        # raise UserError("You're about to pause the Depreciation")
         """ Returns an action opening the asset pause wizard."""
         self.ensure_one()
         new_wizard = self.env['account.asset.pause'].create({
@@ -18,4 +18,8 @@ class AccountAsset(models.Model):
             'type': 'ir.actions.act_window',
             'target': 'new',
             'res_id': new_wizard.id,
+            'warning': {
+                'title': _("Pause Depreciation"),
+                'message': _("You're about to pause the Depreciation"),
+            }
         }
