@@ -9,7 +9,6 @@
             <xpath expr="//button[@name='action_asset_pause']" position="attributes">
                 <attribute name="confirm">Are You sure want to pause?</attribute>
             </xpath>
-
         </field>
     </record>
 
