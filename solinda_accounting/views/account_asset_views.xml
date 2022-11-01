@@ -7,7 +7,7 @@
         <field name="inherit_id" ref="account_asset.view_account_asset_form"/>
         <field name="arch" type="xml">
             <xpath expr="//button[@name='action_asset_pause']" position="attributes">
-                <attribute name="confirm">"Are You sure want to pause?"</attribute>
+                <attribute name="confirm">Are You sure want to pause?</attribute>
             </xpath>
 
         </field>
