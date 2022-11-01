@@ -6,10 +6,9 @@
         <field name="model">account.asset</field>
         <field name="inherit_id" ref="account_asset.view_account_asset_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//sheet/group/group[@string='Depreciation Method']" position="inside">
+            <field name="first_depreciation_date" position="after">
                 <field name="pause_dep_check" />
-            </xpath>
-
+            </field>
             <xpath expr="button[@name='action_asset_pause']" position="replace">
                 <attribute name="attrs">{'invisible': ['|', ('state', '!=', 'open'), ('asset_type', '!=', 'purchase'),('pause_dep_check', '=', False)]}</attribute>
             </xpath>
